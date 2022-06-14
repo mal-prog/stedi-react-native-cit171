@@ -1,5 +1,5 @@
 import { useState} from "react";
-import { SafeAreaView, StyleSheet, TextInput } from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
 const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -21,6 +21,12 @@ const Login = () => {
         keyboardType="numeric"
         secureTextEntry={true}
       />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={onPress}
+      >
+        <Text>LogIn</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
