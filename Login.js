@@ -2,7 +2,8 @@ import { useState} from "react";
 import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text } from "react-native";
 
 const sendText = async (phoneNumber) => {
-  const loginResponse = await fetch('https//dev.stedi.me/twofactorlogin/'+phoneNumber, {
+  console.log("PhoneNumber: ",phoneNumber)
+  await fetch('https//dev.stedi.me/twofactorlogin/'+phoneNumber, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/text'
@@ -14,22 +15,23 @@ const sendText = async (phoneNumber) => {
 
 
 
-const getToken = async({phoneNumber, oneTimePassword}) =>{
-  console.log('PhoneNumber' ,phoneNumber);
-  const loginResponse=await fetch('https//dev.stedi.me/twofactorlogin', {
+const getToken = async({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
+  const tokenResponse =await fetch('https//dev.stedi.me/twofactorlogin', {
     method: 'POST',
+    body:JSON.stringify({oneTimePassword, phoneNumber}),
     headers: {
-      'content-type':'application/text'
-    },
-    body:JSON.stringify({
-      phoneNumber,
-      oneTimePassword
-    })
+      'Content-type':'application/json'
+    }
+
 });
-const token = await loginResponse.text();
-console.log(token);
+const responseCode= tokenResponse.status;//200 means logged in successfully
+console.log("Response Status Code", responseCode);
+if(responseCode==200){
+  setUserLoggedIn(true);
 }
-const Login = () => {
+const tokenResponseString = await tokenResponse.text}
+
+const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [oneTimePassword, setOneTimePassword] = useState(null);
 
@@ -57,7 +59,8 @@ const Login = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={()=>{getToken({phoneNumber, oneTimePassword})}}
+        onPress={()=>{
+          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn})}}
       >
         <Text>LogIn</Text>
       </TouchableOpacity>
@@ -87,4 +90,4 @@ button:{
 }
 });
 
-export default Login
+export default Login;

@@ -14,7 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icons from "./Icons";
 const Tab = createMaterialBottomTabNavigator();
 
-export default function App(props) {
+export default function App() {
   const [userLoggedIn, setUserLoggedIn] = useState (false)
 
   if(userLoggedIn){
@@ -62,12 +62,13 @@ export default function App(props) {
 
     } else{
       return (
-      <View>
-        <Login/>
-      </View>
+      <Login setUserLoggedIn={setUserLoggedIn}/>
       )
    }
   }
 const styles = StyleSheet.create({
+  margin:{
+    marginTop:10
+  }
   
 });
