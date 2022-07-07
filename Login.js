@@ -3,24 +3,24 @@ import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text } from "rea
 
 const sendText = async (phoneNumber) => {
   console.log("PhoneNumber: ",phoneNumber)
-  await fetch('https//dev.stedi.me/twofactorlogin/'+phoneNumber, {
+  const loginResponse = await fetch('https://dev.stedi.me/twofactorlogin/' + phoneNumber, {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/text'
+    'content-type': 'application/text'
   }
 });
   const loginResponseText = await loginResponse.text(); //converts the promise to a string by using await
-  console.log('Login Response',loginResponseText);
+  console.log('Login Response', loginResponseText);
 };
 
 
 
 const getToken = async({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
-  const tokenResponse =await fetch('https//dev.stedi.me/twofactorlogin', {
+  const tokenResponse =await fetch('https://dev.stedi.me/twofactorlogin', {
     method: 'POST',
     body:JSON.stringify({oneTimePassword, phoneNumber}),
     headers: {
-      'Content-type':'application/json'
+      'content-type':'application/text'
     }
 
 });
@@ -29,13 +29,13 @@ console.log("Response Status Code", responseCode);
 if(responseCode==200){
   setUserLoggedIn(true);
 }
-const tokenResponseString = await tokenResponse.text}
+const tokenResponseString = await tokenResponse.text()}
 
 const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [oneTimePassword, setOneTimePassword] = useState(null);
 
-  return ( 
+  return (
     <SafeAreaView style={styles.mainView}>
       <TextInput
         style={styles.input}
@@ -43,6 +43,13 @@ const Login = (props) => {
         value={phoneNumber}
         placeholder="801-555-1212"
       />
+     
+      <TouchableOpacity
+        style={styles.button}
+        onPress={()=>{sendText(phoneNumber)}}
+      >
+        <Text>Send Text</Text>
+      </TouchableOpacity>
       <TextInput
         style={styles.input}
         onChangeText={setOneTimePassword}
@@ -51,20 +58,17 @@ const Login = (props) => {
         keyboardType="numeric"
         secureTextEntry={true}
       />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={()=>{sendText(phoneNumber)}}
-      >
-        <Text>Send Text</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      
+        <TouchableOpacity
         style={styles.button}
         onPress={()=>{
-          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn})}}
-      >
-        <Text>LogIn</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn});
+        }}
+        >
+          <Text>log in</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+
   );
 };
 

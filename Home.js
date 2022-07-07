@@ -4,6 +4,10 @@ import { Card, Button } from 'react-native-elements';
 import Icons from './Icons.js';
 import Bar  from './Bar.js';
 
+const getEmail = async (props) => {
+  const email = await fetch('https://dev.stedi.me/validate'+ props.userToken)
+  return email
+}
 const Home = () => {
   return (
     <View>
